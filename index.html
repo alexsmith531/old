@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+
+
+
+<head>
+<title>Photo-Shoplifting!</title>
+</head>
+
+<body> 
+<style>
+body{
+background-color:silver;
+width:100%;
+text-align:center;
+margin:0;
+max-width:800;
+}
+</style>
+<h1 style="text-align:center; width:100%; max-width:800;">
+
+Photo-Shoplifting!
+</h1>
+
+<p>
+<style="max-width:800;"> 
+This is a tool that takes an image and a selected region, and attempts to remove the "most important" object in the selected region. This is accomplished
+ in a similar manner to Photoshop's Content-Aware Fill, in that the object is tracked by it's edges and removed with a neural-network expanded background
+based on the rest of the image.
+</p>
+
+
+<p style="text-align:center;">
+
+Drag and drop an image below, select the region to remove the object, then press "Send" !
+</p>
+
+
+
+<canvas id="myCanvas" width="400" height="400">
+<style>
+canvas {
+display:inline;
+margin:0;
+  border: 10px dashed #333;
+#mycanvas.hover { border: 10px dashed #fff; }
+</style>
+
+<script>
+
+
+
+var myCanvas=document.getElementById('myCanvas');
+var context=myCanvas.getContext('2d');
+var radius=50;
+var nStartX = myCanvas.offsetLeft;
+var nStartY = myCanvas.offsetTop;
+var bIsDrawing = false;
+var putPoint = function(e){
+  nStartX = e.clientX;
+  nStartY = e.clientY;
+  bIsDrawing = true;
+  radius = 0;
+}
+var drawPoint = function(e){
+  if(!bIsDrawing)
+    return;
+  var nDeltaX = nStartX - e.clientX;
+  var nDeltaY = nStartY - e.clientY;
+  radius = Math.sqrt(nDeltaX * nDeltaX + nDeltaY * nDeltaY)
+  context.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  context.beginPath();
+  context.arc(nStartX-myCanvas.offsetLeft, nStartY-myCanvas.offsetTop, radius, 0, Math.PI*2);
+  context.strokeStyle = '#FF0000';
+  context.lineWidth=4;
+  context.stroke();
+}
+var stopPoint = function(e){
+  bIsDrawing = false;
+}
+myCanvas.addEventListener('mousedown',putPoint);
+myCanvas.addEventListener('mousemove',drawPoint);
+myCanvas.addEventListener('mouseup',stopPoint);
+
+
+</script>
+
+</canvas>
+
+
+
+<style>
+#footer{
+    position:fixed;
+    height:50px;
+    background-color:silver;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    margin-bottom:0px;
+}
+</style>
+<article>
+  <div id="holder"></div> 
+  <p id="status">File API & FileReader API not supported</p>
+</article>
+
+
+
+
+
+
+
+<script>
+var holder = document.getElementById('holder'),
+    state = document.getElementById('status');
+
+if (typeof window.FileReader === 'undefined') {
+  state.className = 'fail';
+} else {
+  state.className = 'success';
+  state.innerHTML = '';
+}
+ 
+myCanvas.ondragover = function () { this.className = 'myCanvas'; return false; };
+myCanvas.ondragend = function () { this.className = ''; return false; };
+myCanvas.ondrop = function (e) {
+  this.className = '';
+  e.preventDefault();
+
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    console.log(event.target);
+    myCanvas.style.background = 'url(' + event.target.result + ') no-repeat center';
+  };
+  console.log(file);
+  reader.readAsDataURL(file);
+var base64 = getBase64Image(document.getElementById("imageid"));
+  return false;
+}
+
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+;
+</script>
+
+
+
+<button type="button" onclick="(base64,nStartX-myCanvas.offsetLeft, nStartY-myCanvas.offsetTop, radius) do something here that does api things">Send</button>
+
+</body>
+
+
+
+<footer style="text-align:center;background-color:silver;" color=#fff >
+<style>
+a:link {
+    color: DarkGoldenRod; 
+    background-color: transparent; 
+    text-decoration: underline;
+}
+
+a:visited {
+    color: DeepPink;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+   background:#999;
+}
+/* IE 6 */
+* html #footer {
+   position:absolute;
+   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+}
+ 
+
+</style>
+	
+<a href="about.html">About</a>
+</footer>
+
+</html>
